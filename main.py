@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests, pandas as pd, csv
+import requests, csv
 
 web_soup = BeautifulSoup(requests.get('https://lyai3h2tol4i4.ok.kimi.link/').content, 'html.parser')
 shoes = web_soup.find_all('div', class_='product-card')
