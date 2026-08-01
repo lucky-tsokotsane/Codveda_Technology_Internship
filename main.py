@@ -1,13 +1,29 @@
 from bs4 import BeautifulSoup
-import requests, csv
+import requests, pandas as pd
 
-web_soup = BeautifulSoup(requests.get('https://lyai3h2tol4i4.ok.kimi.link/').content, 'html.parser')
-shoes = web_soup.find_all('div', class_='product-card')
+def webscrape(url):
+    site = requests.get(url=url)
+    soup = BeautifulSoup(site.content, 'html.parser')
 
-with open('stored_data.csv', 'wt', newline='') as csvfile:
-    for shoe in shoes:
-        shoe_name = shoe.find('h3', class_='product-name').text
-        shoe_color = shoe.find('p', class_='product-color').text
-        shoe_price = shoe.find('p', class_='product-price').text
+    cards = soup.find_all('div', class_='gtm-product-tile css-18icsov')
+    data_frame = pd.DataFrame(columns=['SHIRT NAME', 'SHIRT PRICE', 'SHIRT SPECIAL', 'SHIRT DEAL'])
 
-        csv.writer(csvfile).writerow([shoe_name, shoe_color, shoe_price])
+    for card in cards:
+        shirt_row_name = Null(card.find('p', class_='chakra-text'))
+        shirt_row_price = Null(card.find('p', class_='css-1wlfx5v'))
+        shirt_row_special = Null(card.find('div', class_='css-dx5xao'))
+        shirt_row_deal = Null(card.find('div', class_='css-qczfus'))
+
+        data_frame.loc[len(data_frame)] = [shirt_row_name, shirt_row_price, shirt_row_special, shirt_row_deal]
+        data_frame.to_csv(r'stored_data.csv', index=False)
+
+
+def Null(finder):
+    if finder is None:
+        return 'NO VALUE'
+    else:
+        return finder.text.strip()
+
+
+if __name__ == '__main__':
+    webscrape(url='https://www.oldkhaki.co.za/c/mens-tops-tshirts')
