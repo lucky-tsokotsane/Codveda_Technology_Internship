@@ -18,10 +18,10 @@ Median:\n{dataFrame.median(numeric_only=True)}
 Variance:\n{dataFrame.var(numeric_only=True)}""")
 
     sns.pairplot(data=dataFrame, hue="species")
-    plt.savefig("pairplot.png")
+    plt.savefig("images/pairplot.png")
 
     sns.histplot(data=dataFrame)
-    plt.savefig("histplot.png")
+    plt.savefig("images/histplot.png")
 
     sns.boxenplot(data=dataFrame)
-    plt.savefig("boxplot.png")
+    plt.savefig("images/boxplot.png")
