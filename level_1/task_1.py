@@ -16,7 +16,7 @@ def webscrape(target_site="https://www.truworths.co.za/category/men"):
             product_price = card.find(name="span", class_="product-tile-price").text
 
             dataFrame.loc[len(dataFrame)] = [product_name, product_brand, product_price, product_image_url]
-            dataFrame.to_csv(path_or_buf="stored_data.csv", index=False)
+            dataFrame.to_csv(path_or_buf="dataset/stored_data.csv", index=False)
 
 if __name__ == '__main__':
     webscrape()
