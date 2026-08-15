@@ -8,7 +8,7 @@ for k in range(1, 11):
     KMeans.fit(X)
     WCSS.append(KMeans.inertia_)
 
-sns.lineplot(x=range(1, 11), y=WCSS, markers='8')
+sns.lineplot(x=range(1, 11), y=WCSS)
 plt.xlabel("Number of clusters")
 plt.ylabel("WCSS")
 plt.title("Elbow plot")
