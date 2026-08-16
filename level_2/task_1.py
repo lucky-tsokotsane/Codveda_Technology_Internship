@@ -1,21 +1,31 @@
 import sklearn as sk, pandas as pd, matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
-dataFrame = pd.read_csv("../Data Set For Task/Housing.csv")
+dataFrame = pd.read_csv("Data Set For Task/Housing.csv")
 x_train, x_test, y_train, y_test = sk.model_selection.train_test_split(dataFrame["price"], dataFrame["area"], random_state=0, test_size=0.2)
 
 Linearmodel = sk.linear_model.LinearRegression()
 Linearmodel.fit(x_train.values.reshape(-1, 1), y_train)
 y_linear = Linearmodel.predict(x_train.values.reshape(-1, 1))
+linear_string = f'''LINEAR MODEL
+model accuracy: {r2_score(y_train, y_linear):.3f}
+mse: {mean_squared_error(y_train, y_linear):.3f}
+mae: {mean_absolute_error(y_train, y_linear):.3f}'''
+plt.plot(x_train, y_linear, color='red', label='Training Data')
 
-RandomForestmodel = sk.ensemble.RandomForestRegressor(n_estimators=100, random_state=0)
-RandomForestmodel.fit(x_train.values.reshape(-1, 1), y_train)
-y_random_forest = RandomForestmodel.predict(x_train.values.reshape(-1, 1))
+NeuralNetworkmodel = sk.neural_network.MLPRegressor()
+NeuralNetworkmodel.fit(x_train.values.reshape(-1, 1), y_train)
+y_NeuralNetwork = NeuralNetworkmodel.predict(x_train.values.reshape(-1, 1))
+neural_string = f'''NEURAL NETWORK
+model accuracy: {r2_score(y_train, y_NeuralNetwork):.3f}
+mse: {mean_squared_error(y_train, y_NeuralNetwork):.3f}
+mae: {mean_absolute_error(y_train, y_NeuralNetwork):.3f}'''
+plt.plot(x_train, y_NeuralNetwork, color='blue', label='Training Data')
 
-DecisionTreemodel = sk.tree.DecisionTreeRegressor(random_state=0)
-DecisionTreemodel.fit(x_train.values.reshape(-1, 1), y_train)
-y_decision_tree = DecisionTreemodel.predict(x_train.values.reshape(-1, 1))
+plt.scatter(x_test, y_test, color='green', label='Testing Data')
+plt.scatter(x_train, y_train, color='black', label='Linear Model')
+plt.xlabel('Price')
+plt.ylabel('Area')
+plt.savefig('images/NeuralNetwork.png')
 
-print(f"LINEAR MODEL\nr2: {r2_score(y_train, y_linear):.2f} (r: {r2_score(y_train, y_linear)**(1/2):.2f})\nMSE: {mean_squared_error(y_train, y_linear):.2f} (RMSE: {mean_squared_error(y_train, y_linear)**(1/2):.2f})\nMAE: {mean_absolute_error(y_train, y_linear):.2f}\n")
-print(f"RANDOM FOREST MODEL\nr2: {r2_score(y_train, y_random_forest):.2f} (r: {r2_score(y_train, y_random_forest)**(1/2):.2f})\nMSE: {mean_squared_error(y_train, y_random_forest):.2f} (RMSE: {mean_squared_error(y_train, y_random_forest)**(1/2):.2f})\nMAE: {mean_absolute_error(y_train, y_random_forest):.2f}\n")
-print(f"DECISION TREE MODEL\nr2: {r2_score(y_train, y_decision_tree):.2f} (r: {r2_score(y_train, y_decision_tree)**(1/2):.2f})\nMSE: {mean_squared_error(y_train, y_decision_tree):.2f} (RMSE: {mean_squared_error(y_train, y_decision_tree)**(1/2):.2f})\nMAE: {mean_absolute_error(y_train, y_decision_tree):.2f}")
+print(linear_string+'\n\n'+neural_string)
